@@ -1,0 +1,183 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Author: Thomas Rey
+% 
+% This is a template of a very complete CV using the 'moderncv' package
+% and the 'timeline' package. For more information on those, please
+% access: 
+% https://www.ctan.org/tex-archive/macros/latex/contrib/moderntimeline
+% https://www.ctan.org/tex-archive/macros/latex/contrib/moderncv
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[12pt, a4paper, sans]{moderncv}
+\moderncvstyle{classic}             % The of the CV, can be also: casual, banking, oldstyle
+\moderncvcolor{blue}                % Color of the CV, can be also: black, green, grey, orange, purple, red
+% --------------- PDFLaTeX, XeLaTeX ou LuaLaTeX ?
+\usepackage{iftex}
+\ifPDFTeX
+  % --------------- PDFLaTeX ou LaTeX
+  \usepackage[utf8]{inputenc} % pour avoir ce fichier en utf8
+  \usepackage[T1]{fontenc} % pour avoir les lettres accentuées dans le résultat PDF
+  \usepackage{lmodern} % pour utiliser cette police vectorielle (elle utilise l'encodage T1 avec 256 lettres)
+\else
+  % --------------- XeLaTeX ou LuaLaTeX
+  \usepackage{fontspec} % pour le bon encodage des PDFs => police lmodern
+\fi
+\usepackage[scale=0.85]{geometry}    % Width of the entire CV
+\setlength{\hintscolumnwidth}{4.1cm} % Width of the timeline on your left
+\usepackage{moderntimeline}
+\usepackage{graphicx}
+\tlmaxdates{2010}{2018}              % Beginning and start of your timeline                        
+\newcommand{\cvreferencecolumn}[2]{
+O \cvitem[0.8em]{}{%
+    \begin{minipage}[t]{\listdoubleitemmaincolumnwidth}#1\end{minipage}%
+    \hfill%
+    \begin{minipage}[t]{\listdoubleitemmaincolumnwidth}#2\end{minipage}%
+    }%
+}
+
+\newcommand{\cvreference}[8]{%
+    \textbf{#1}\newline% Name
+    \ifthenelse{\equal{#2}{}}{}{\addresssymbol~#2\newline}%
+    \ifthenelse{\equal{#3}{}}{}{#3\newline}%
+    \ifthenelse{\equal{#4}{}}{}{#4\newline}%
+    \ifthenelse{\equal{#5}{}}{}{#5\newline}%
+    \ifthenelse{\equal{#6}{}}{}{\emailsymbol~\texttt{\href{mailto:#6}{\nolinkurl{#6}}}\newline}%
+    \ifthenelse{\equal{#7}{}}{}{\phonesymbol~#7\newline}
+    \ifthenelse{\equal{#8}{}}{}{\mobilephonesymbol~#8}}
+
+
+% Personal Information
+\name{Jean-Michel \newline}{Épidémiologiste}
+\title{\emph{Curriculum Vitae}}                              
+\address{IHU Méditerranée \\  19-21 Boulevard Jean Moulin \\ 13005 Marseille }{FRANCE}{}
+\phone[mobile]{+33~(6)~1~23~45~67~89}                   
+\phone[fixed]{+33~(4)~1~23~45~67~89}
+\email{Jean.mi.epidemio@ihu.toto}                % optional, remove / comment the line if not wanted
+\homepage{https://fr.wikipedia.org/wiki/Clown}    % optional, remove / comment the line if not wanted
+\social[linkedin]{https://www.linkedin.com}  % optional, remove / comment the line if not wanted     
+\social[twitter]{jeanmiepidemio}  % optional, remove / comment the line if not wanted
+\social[github]{jeanmicodeur}   % optional, remove / comment the line if not wanted           
+%\extrainfo{\emailsymbol \emaillink{mdantas.astro@gmail.com}}
+\quote{Absit reverentia vero - \emph{Ovide}}                       
+\makeatletter\renewcommand*{\bibliographyitemlabel}{\@biblabel{\arabic{enumiv}}}\makeatother
+
+
+\begin{document}
+
+\makecvtitle
+
+\section{Éducation}
+
+\bigskip
+
+\tlcventry{2015}{2018}{PhD Extragalactic Bullshitology}{Institute of Riendutoutlogie - University of California at Sunnydale \emph{(UCS, par la suite)}}{}{Sunnydale, California, USA}{}
+
+\bigskip
+
+\tlcventry{2013}{2015}{MSc Extragalactic Bullshitology}{UCS}{}{Sunnydale, California, USA}{}
+
+\bigskip
+
+\tlcventry{2010}{2013}{Licence de beau parleur}{Université d'Aix-Marseille}{Marseille, France}{}{Mineure en astrologie}
+
+\bigskip
+
+\section{Manuscrits}
+
+\medskip
+
+\subsection{\textbf{Thèse de doctorat}}
+
+\cvitem{\textbf{Titre}}{Se soigner avec du sucre : rêve ou réalité ?}
+\cvitem{\textbf{Encadrant}}{Professeur B. Oiron}
+\cvitem{\textbf{Jury de thèse}}{Complaisant}
+
+\bigskip
+
+\subsection{\textbf{Mémoire de master}}
+
+\cvitem{\textbf{Titre}}{Le régime Dukhan}
+\cvitem{\textbf{Encadrant}}{Professor R. Mac Donald}
+
+\bigskip
+
+\section{Expériences}
+
+\medskip
+
+\subsection{Teaching Assistant}
+
+\tldatecventry{2016}{Extragalactic Bullshitology}{UCS}{Sunnydale}{USA}{SUPERVISOR Prof. B. Ullshit}
+
+\bigskip
+
+\subsection{Extra-académique}
+\tldatecventry{2012}{Contrôle des granulés}{Boiron}{Lyon}{France}{}
+
+\cvitem{\textbf{DESCRIPTION}}{blabla}
+
+\bigskip
+
+\section{Publications}
+
+\bigskip
+
+\section{Communications}
+
+\bigskip
+
+\section{Languages}
+\cvlanguage{Français}{Courant}{langue natale}
+
+\medskip
+
+\cvlanguage{Anglais}{lu}{langue pas natale}
+
+\bigskip
+
+\section{Compétences}
+
+\cvitemwithcomment{Programmation}{Python, C/C++, \LaTeX}{}
+
+\medskip
+
+\cvitemwithcomment{Outils}{Gitlab}{Program Version Control and Program Repositories.}
+
+\medskip
+
+\cvitemwithcomment{Autres}{Communication, Organisation, Joie de vivre}{}
+
+\bigskip
+
+\section{Participation à des évènements}
+
+\tldatecventry{2017}{JT de Cnews}{}{}{France}{}
+
+\bigskip
+
+\bigskip
+
+
+\section{Certifications}
+
+
+
+\cvitem{\textbf{English}}{\emph{Certificate of Proficiency in English} \newline Wall Street Institute}
+
+\bigskip
+
+
+
+\section{Références}
+
+\begin{cvcolumns}
+    \cvcolumn{Un premier nom}{Son adresse \\ Université prestigieuse 1\\ email}
+    \cvcolumn{Un deuxième nom}{Son adresse \\ Université prestigieuse 2\\ email}
+
+\end{cvcolumns}
+
+
+\clearpage
+
+
+\end{document}
