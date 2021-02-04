@@ -1,4 +1,5 @@
 # ModerCV pour matheux
 
 Un template pour faire de jolis cv académiques avec une classe moderncv légèrement modifiée
-![Alt-Text](./snapshot.png)
+
+![Alt-Text](<./example.png>)
