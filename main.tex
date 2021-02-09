@@ -23,28 +23,17 @@
   \usepackage{fontspec} % pour le bon encodage des PDFs => police lmodern
 \fi
 \usepackage[scale=0.85]{geometry}    % Remplissage de la page par le corps du CV (ici, 85%)
-\setlength{\hintscolumnwidth}{4.1cm} % Largeur de la timeline/frise, sur le coté.
+\setlength{\hintscolumnwidth}{4.cm} % Largeur de la timeline/frise, sur le coté.
 \usepackage{moderntimeline}
 \usepackage{graphicx}
 \tlmaxdates{2010}{2018}              % Années de départ et de fin de la frise/timeline                  
 \newcommand{\cvreferencecolumn}[2]{
-O \cvitem[0.8em]{}{%
+ \cvitem[0.8em]{}{%
     \begin{minipage}[t]{\listdoubleitemmaincolumnwidth}#1\end{minipage}%
     \hfill%
     \begin{minipage}[t]{\listdoubleitemmaincolumnwidth}#2\end{minipage}%
     }%
 }
-
-\newcommand{\cvreference}[8]{%
-    \textbf{#1}\newline% Name
-    \ifthenelse{\equal{#2}{}}{}{\addresssymbol~#2\newline}%
-    \ifthenelse{\equal{#3}{}}{}{#3\newline}%
-    \ifthenelse{\equal{#4}{}}{}{#4\newline}%
-    \ifthenelse{\equal{#5}{}}{}{#5\newline}%
-    \ifthenelse{\equal{#6}{}}{}{\emailsymbol~\texttt{\href{mailto:#6}{\nolinkurl{#6}}}\newline}%
-    \ifthenelse{\equal{#7}{}}{}{\phonesymbol~#7\newline}
-    \ifthenelse{\equal{#8}{}}{}{\mobilephonesymbol~#8}}
-
 
 % Personal Information
 \name{Jean-Michel \newline}{Épidémiologiste}
@@ -152,8 +141,6 @@ O \cvitem[0.8em]{}{%
 \section{Participation à des évènements}
 
 \tldatecventry{2017}{JT de Cnews}{}{}{France}{}
-
-\bigskip
 
 \bigskip
 
