@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Author: Thomas Rey
+% Author: Thomas Rey, Johann Dreo
 % 
 % This is a template of a very complete CV using the 'moderncv' package
 % and the 'timeline' package. For more information on those, please
@@ -8,9 +8,26 @@
 % https://www.ctan.org/tex-archive/macros/latex/contrib/moderncv
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Configuration du modèle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \documentclass[12pt, a4paper, sans]{moderncv}
-\moderncvstyle{classic}             % Style of the CV, can be also: casual, banking, oldstyle
-\moderncvcolor{blue}                % Color of the CV, can be also: black, green, grey, orange, purple, red
+\usepackage{graphicx}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Choix du style et de la couleur
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\moderncvstyle{classic} % Style of the CV, can be also: casual, banking, oldstyle
+\moderncvcolor{cyan}% Couleurs standards: black, green, grey, orange, purple, red
+% Pour la couleur cyan, voir le fichier modercvcolorcyan.sty
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Encodage et compilation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % --------------- PDFLaTeX, XeLaTeX ou LuaLaTeX ?
 \usepackage{iftex}
 \ifPDFTeX
@@ -22,34 +39,161 @@
   % --------------- XeLaTeX ou LuaLaTeX
   \usepackage{fontspec} % pour le bon encodage des PDFs => police lmodern
 \fi
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Géométrie
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \usepackage[scale=0.85]{geometry}    % Remplissage de la page par le corps du CV (ici, 85%)
 \setlength{\hintscolumnwidth}{4.cm} % Largeur de la timeline/frise, sur le coté.
 \usepackage{moderntimeline}
-\usepackage{graphicx}
-\tlmaxdates{2010}{2018}              % Années de départ et de fin de la frise/timeline                  
-\newcommand{\cvreferencecolumn}[2]{
- \cvitem[0.8em]{}{%
-    \begin{minipage}[t]{\listdoubleitemmaincolumnwidth}#1\end{minipage}%
-    \hfill%
-    \begin{minipage}[t]{\listdoubleitemmaincolumnwidth}#2\end{minipage}%
+\tlmaxdates{2010}{2021}              % Années de départ et de fin de la frise/timeline
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bibliographie avec liens hyper texte.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[%
+  style=numeric,        % Style
+  maxbibnames=99,    % Limite du nombre d'auteurs avant d'abbréger en « et al. »
+  backend=biber,
+  defernumbers=true,
+  sorting=ydnt,      % Trier par année (décroissante), nom, titre.
+]{biblatex}
+
+% Fichier de bibliographie
+\addbibresource{main.bib}
+
+% Insérer un lien hyper texte sur le titre de la référence.
+% Considère les champs : DOI (via dx.doi.org), URL, ISBN (via wikimedia), eprint (via arxiv).
+\newbibmacro{string+doiurlisbn}[1]{%
+  \iffieldundef{doi}{%
+    \iffieldundef{url}{%
+      \iffieldundef{isbn}{%
+        \iffieldundef{eprint}{%
+          #1%
+        }{%
+          \href{http://arxiv.org/abs/\thefield{eprint}}{#1}%
+        }%
+      }{%
+        \href{https://meta.wikimedia.org/wiki/Special:BookSources/\thefield{isbn}}{#1}%
+      }%
+    }{%
+      \href{\thefield{url}}{#1}%
     }%
+  }{%
+    \href{http://dx.doi.org/\thefield{doi}}{#1}%
+  }%
 }
 
-% Personal Information
+\DeclareFieldFormat{title}{\usebibmacro{string+doiurlisbn}{\mkbibemph{#1}}}
+\DeclareFieldFormat[article,inproceedings,phdthesis,patent,book]{title}%
+    {\usebibmacro{string+doiurlisbn}{\mkbibquote{#1}}}
+
+% Ne pas montrer les champs de lien dans la biblio.
+\ExecuteBibliographyOptions{doi=false}
+\ExecuteBibliographyOptions{url=false}
+\ExecuteBibliographyOptions{eprint=false}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mise en valeur du nom d'un auteur.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{xpatch}% or use http://tex.stackexchange.com/a/40705
+
+\makeatletter
+\newbibmacro*{name:bold}[2]{%
+  \edef\blx@tmp@name{\expandonce#1, \expandonce#2}%
+  \def\do##1{\ifdefstring{\blx@tmp@name}{##1}{\bfseries\listbreak}{}}%
+  \dolistloop{\boldnames}}
+\newcommand*{\boldnames}{}
+\makeatother
+
+\xpretobibmacro{name:family}{\begingroup\usebibmacro{name:bold}{#1}{#2}}{}{}
+\xpretobibmacro{name:given-family}{\begingroup\usebibmacro{name:bold}{#1}{#2}}{}{}
+\xpretobibmacro{name:family-given}{\begingroup\usebibmacro{name:bold}{#1}{#2}}{}{}
+\xpretobibmacro{name:delim}{\begingroup\normalfont}{}{}
+
+\xapptobibmacro{name:family}{\endgroup}{}{}
+\xapptobibmacro{name:given-family}{\endgroup}{}{}
+\xapptobibmacro{name:family-given}{\endgroup}{}{}
+\xapptobibmacro{name:delim}{\endgroup}{}{}
+
+\forcsvlist{\listadd\boldnames}
+{
+    {J.-M. Epidemiologiste},
+    {J\bibinitperiod-M\bibinitperiod Epidemiologiste},
+    {Jean-Michel Epidemiologiste},
+    {Jean-Michel\bibinitdelim{}Epidemiologiste},
+    {Epidemiologiste, J.-M.},
+    {Epidemiologiste, J\bibinitperiod M\bibinitperiod},
+    {J\bibinitperiod-M\bibinitperiod\bibinitdelim{}Epidemiologiste}
+} % Vous voyez l'idée…
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Couleur des liens.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{cyanclair}{RGB}{102,193,191}
+\definecolor{cyanmedium}{RGB}{0,140,142}
+\definecolor{cyanfonce}{RGB}{39,86, 98}
+
+% moderncv loads the package hyperref by itself with its own hypersetup
+% Hence, you need not load hyperref again. But load the hypersetup using \AfterPreamble:
+\AfterPreamble{%With \usepackage{hyperref}
+    \hypersetup{colorlinks}
+    \hypersetup{
+        urlcolor  = {cyanfonce}, % Liens externes.
+        linkcolor = {cyanfonce}, % Renvois
+        citecolor = {cyanfonce}, % Citations
+    }
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mise en valeur des dates dans la bibliographie.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\DeclareFieldFormat{date}{\textcolor{cyanmedium}{\mkbibbold{#1}}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cinq étoiles.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{fontawesome} % stars
+\newcommand{\starsFive}{{\color{cyanclair}\faStar\faStar\faStar\faStar\faStar}}
+\newcommand{\starsFour}{{\color{cyanclair}\faStar\faStar\faStar\faStar\faStarO}}
+\newcommand{\starsThree}{{\color{cyanclair}\faStar\faStar\faStar\faStarO\faStarO}}
+% etc.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% En-tête
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \name{Jean-Michel \newline}{Épidémiologiste}
-\title{\emph{Curriculum Vitae}}                              
-\address{IHU Méditerranée \\  19-21 Boulevard Jean Moulin \\ 13005 Marseille }{FRANCE}{}
-\phone[mobile]{+33~(6)~1~23~45~67~89}                   
+\title{\emph{Curriculum Vitæ}}
+\address{IHU Méditerranée \\  19-21 Boulevard Jean Moulin \\ 13005 Marseille }{\textsc{France}}{}
+\phone[mobile]{+33~(6)~1~23~45~67~89}
 \phone[fixed]{+33~(4)~1~23~45~67~89}
 \email{Jean.mi.epidemio@ihu.toto}                % optional, remove / comment the line if not wanted
 \homepage{https://fr.wikipedia.org/wiki/Clown}    % optional, remove / comment the line if not wanted
-\social[linkedin]{https://www.linkedin.com}  % optional, remove / comment the line if not wanted     
+\social[linkedin]{https://www.linkedin.com}  % optional, remove / comment the line if not wanted
 \social[twitter]{jeanmiepidemio}  % optional, remove / comment the line if not wanted
-\social[github]{jeanmicodeur}   % optional, remove / comment the line if not wanted           
-%\extrainfo{\emailsymbol \emaillink{mdantas.astro@gmail.com}}
-\quote{Absit reverentia vero - \emph{Ovide}}                       
+\social[github]{jeanmicodeur}   % optional, remove / comment the line if not wanted
+%\extrainfo{\emailsymbol \emaillink{roger@lanouille.com}}
+\quote{Absit reverentia vero --- \emph{Ovide}}
 \makeatletter\renewcommand*{\bibliographyitemlabel}{\@biblabel{\arabic{enumiv}}}\makeatother
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Corps du CV.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
 
@@ -57,19 +201,19 @@
 
 \section{Éducation}
 
-\bigskip
+\medskip
 
-\tlcventry{2015}{2018}{PhD Extragalactic Bullshitology}{Institute of Riendutoutlogie - University of California at Sunnydale \emph{(UCS, par la suite)}}{}{Sunnydale, California, USA}{}
+\tlcventry{2015}{2021}{PhD Extragalactic Bullshitology}{Institute of Riendutoutologie --- University of California at Sunnydale \emph{(UCS, par la suite)}}{}{Sunnydale, California, USA}{}
 
-\bigskip
+\medskip
 
 \tlcventry{2013}{2015}{MSc Extragalactic Bullshitology}{UCS}{}{Sunnydale, California, USA}{}
 
-\bigskip
+\medskip
 
 \tlcventry{2010}{2013}{Licence de beau parleur}{Université d'Aix-Marseille}{Marseille, France}{}{Mineure en astrologie}
 
-\bigskip
+\medskip
 
 \section{Manuscrits}
 
@@ -81,14 +225,14 @@
 \cvitem{\textbf{Encadrant}}{Professeur B. Oiron}
 \cvitem{\textbf{Jury de thèse}}{Complaisant}
 
-\bigskip
+\medskip
 
 \subsection{\textbf{Mémoire de master}}
 
 \cvitem{\textbf{Titre}}{Le régime Dukhan}
 \cvitem{\textbf{Encadrant}}{Professor R. Mac Donald}
 
-\bigskip
+\medskip
 
 \section{Expériences}
 
@@ -98,35 +242,36 @@
 
 \tldatecventry{2016}{Extragalactic Bullshitology}{UCS}{Sunnydale}{USA}{SUPERVISOR Prof. B. Ullshit}
 
-\bigskip
+\medskip
 
 \subsection{Extra-académique}
 \tldatecventry{2012}{Contrôle des granulés}{Boiron}{Lyon}{France}{}
-
-\cvitem{\textbf{DESCRIPTION}}{blabla}
-
-\bigskip
-
-\section{Publications}
-
-\bigskip
-
-\section{Communications}
-
-\bigskip
-
-\section{Languages}
-\cvlanguage{Français}{Courant}{langue natale}
+\cvitem{\textbf{DESCRIPTION}}{Filtrage des gros, ingestion des petits, pour les moyens je n'ai jamais trop su.}
 
 \medskip
 
-\cvlanguage{Anglais}{lu}{langue pas natale}
+% \section{Publications}
 
-\bigskip
+\nocite{*} % Mettre tout ce qu'il y a dans le fichier .bib (il est toujours possible de \cite{…} ailleurs).
+\AtNextBibliography{\small} % Écrit en petit.
+\printbibliography[nottype=inproceedings,title={Publications}] % Dans une section.
+\medskip
+\printbibliography[type=inproceedings,title={Communications}] % Dans une section.
+
+\medskip
+
+\section{Languages}
+\cvlanguage{Français}{Courant}{langue natale~\starsFour}
+
+\medskip
+
+\cvlanguage{Anglais}{lu}{langue pas natale~\starsThree}
+
+\medskip
 
 \section{Compétences}
 
-\cvitemwithcomment{Programmation}{Python, C/C++, \LaTeX}{}
+\cvitemwithcomment{Programmation}{Python~\starsFive, C/C++~\starsFour, \LaTeX~\starsThree}{}
 
 \medskip
 
@@ -136,35 +281,37 @@
 
 \cvitemwithcomment{Autres}{Communication, Organisation, Joie de vivre}{}
 
-\bigskip
+\medskip
 
 \section{Participation à des évènements}
 
 \tldatecventry{2017}{JT de Cnews}{}{}{France}{}
 
-\bigskip
+\medskip
+
+\section{Service à la communauté}
+
+\cvitem{\textbf{Absent}}{Mais j'ai un mot~: j'avais aqua-poney~\cite{Epidemio06}.}
+
+\medskip
 
 
 \section{Certifications}
 
 
-
 \cvitem{\textbf{English}}{\emph{Certificate of Proficiency in English} \newline Wall Street Institute}
 
-\bigskip
+\medskip
 
 
 
 \section{Références}
 
 \begin{cvcolumns}
-    \cvcolumn{Un premier nom}{Son adresse \\ Université prestigieuse 1\\ email}
-    \cvcolumn{Un deuxième nom}{Son adresse \\ Université prestigieuse 2\\ email}
+    \cvcolumn{Karen Snowflake}{69 cité des viols furtifs\\ Université d'albâtre\\ karen@hotmail.com}
+    \cvcolumn{Ma maman}{1 av. du Mouroir\\ EPAHD des Aberkanisés \\ maitre.etalon@notaires.org}
 
 \end{cvcolumns}
-
-
-\clearpage
 
 
 \end{document}
