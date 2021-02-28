@@ -14,3 +14,6 @@ Requiert les paquets (contenus dans Texlive2019) :
 
 ![Alt-Text](<./example.png>)
 
+Auteurs~:
+- Thomas Rey https://gitlab.com/thoma.rey/modercv-math
+- nojhan
